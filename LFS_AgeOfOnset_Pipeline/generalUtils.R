@@ -10,6 +10,10 @@ require(minfi)
 ############################# Functions #############################
 #####################################################################
 
+##########
+# Function to preprocess raw methylation data
+##########
+
 preprocessMethod <- function(data, preprocess) {
   if (preprocess == 'raw') {
     Mset <- preprocessRaw(data)
@@ -33,6 +37,22 @@ preprocessMethod <- function(data, preprocess) {
     Mset <-preprocessNoob(data, dyeMethod="single")
   }
   return(Mset)
+}
+
+##########
+# Function to remove batch effect
+##########
+
+remove_batch_effect <- function(data, outdir,id) {
+  p_train <- readRDS('rds/batchEffectRemoval.rds')
+  cols <- grepl( "cg" , names( data ))
+  beta <- data[ , cols ]
+  clin <- data[ , -cols ]
+  test_pred <-predict(p_train,beta)
+  Xhat_pred <- test_pred[, !(colnames(test_pred) %in% c(maxpc))] %*% t(p_train$rotation[, !(colnames(p_train$rotation) %in% c(maxpc))])
+  beta_adj_pred <- scale(Xhat_pred, center = -(colMeans(beta)), scale = T)
+  data_adj_test <- cbind(clin,beta_adj_pred)
+  return(data_adj_test)
 }
 
 ##########

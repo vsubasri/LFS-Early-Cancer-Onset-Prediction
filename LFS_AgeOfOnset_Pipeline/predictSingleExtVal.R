@@ -1,11 +1,9 @@
-setwd('/hpf/largeprojects/adam/projects/lfs/lfs_germline/methyl_data')
-
 #####################################################################
 ############################# Libraries #############################
 #####################################################################
 
 require(stringr)
-require(dplyr, warn.conflicts = FALSE)
+require(dplyr)
 require(IlluminaHumanMethylation450kanno.ilmn12.hg19)
 require(pROC)
 require(doParallel)
@@ -53,10 +51,7 @@ id <- paste0(id,paste0(args$aggregate,"_"))
 
 data_train <- scale_df(data_train)
 data_test <- scale_df(data_test)
-id <- paste0(id, "scaled_")
-
-id <- paste0(id, "canceratdraw_")
-id <- paste0(id, "systreat_")
+id <- paste0(id, "scaled_canceratdraw_systreat_")
 
 genes <- colnames(data_train)[45:length(data_train)]
 
