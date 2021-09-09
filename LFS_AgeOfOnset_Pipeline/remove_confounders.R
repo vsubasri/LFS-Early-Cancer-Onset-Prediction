@@ -9,46 +9,57 @@ require(reshape2)
 require(umap)
 require(argparse)
 
-source('Scripts/generalUtils.R')
+source('Scripts/utils.R')
 
 parser <- ArgumentParser()
 parser$add_argument("-o","--outdir", action="store")
 parser$add_argument("-i","--id", action="store")
 parser$add_argument("-d","--data", action="store")
 
+datafile <- args$data
+outdir <- args$outdir
+id <- args$id 
+
 #####################################################################
 ############################ Main Script ############################
 #####################################################################
 
+## read in data ## 
 cat("[ Input data  ]","\n")
-data <- read.csv(args$data)
+data <- read.csv(datafile)
 
-## Predict projection onto PC space in test data
-
-cat("[ Predict PCA in Test Data ]","\n")
-data_adj_test <- remove_batch_effect(data,outdir,id)
-
-## remove outliers ## 
+## pca before correction ## 
 cat("[ PCA of all data before correction ]","\n")
 pc <- prcomp(as.matrix(data[45:length(data)]), scale = TRUE)
-pc_clin <- cbind(data[1:44],pc$x)
+pc_clin <- cbind(data[1:44],pcx)
+write.csv(pc_clin,paste0(outdir,'Output/Noob_',id,'_PCA.csv'),quote=F,row.names=F)
+generate_pcsummary(pc_clin,paste0("Noob_",id,"_PCA_summary.csv"),outdir)
+generate_pcplots(pc_clin,paste0("Noob_",id),outdir)
+
+## remove outliers ## 
 keep <- remove_outliers(pc_clin,3)
 data <- data[data$SentrixID %in% keep,]
+
+## array confounder correction ## 
 data_450k <- data[data$array == "450",]
+if (dim(data_450k) == NULL) {
+	cat("No array correction required, skipping to batch correction")
+} else {
+	## correct 450k data ##
+	corrected_450k <- remove_array_confounder(data_450k)
+	data_850k <- data[data$array == "850",]
+	data <- rbind(corrected_450k,data_850k)
+}
 
-## correct 450k data ##
-corrected_450k <- run_correction(data,id,covar,outdir)
-data_850k <- data[data$array == "850",]
-all_corrected <- rbind(corrected_450k,data_850k)
-all_corrected <- all_corrected[!is.na(all_corrected[length(all_corrected)]),]
-saveRDS(all_corrected,paste0(outdir,"rds/NoobCorrected_",id,".rds"))
+## batch confounder correction ## 
+data <- remove_batch_confounder(data)
+saveRDS(data,paste0(outdir,"rds/NoobCorrected_",id,".rds"))
 
-## plot correction ##
+## pca after correction ##
 cat("[ PCA of all data after correction ]","\n")
-pc <- prcomp(as.matrix(all_corrected[45:length(all_corrected)]), scale = TRUE)
-pc_clin <- cbind(all_corrected[1:44],pc$x)
+pc <- prcomp(as.matrix(data[45:length(data)]), scale = TRUE)
+pc_clin <- cbind(data[1:44],pc$x)
 write.csv(pc_clin,paste0(outdir,'Output/NoobCorrected_',id,'_PCA.csv'),quote=F,row.names=F)
 generate_pcsummary(pc_clin,paste0("NoobCorrected_",id,"_PCA_summary.csv"),outdir)
 generate_pcplots(pc_clin,paste0("NoobCorrected_",id),outdir)
-
 
