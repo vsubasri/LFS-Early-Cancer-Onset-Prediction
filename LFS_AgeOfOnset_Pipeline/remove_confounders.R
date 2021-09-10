@@ -30,8 +30,9 @@ data <- read.csv(datafile)
 
 ## pca before correction ## 
 cat("[ PCA of all data before correction ]","\n")
-pc <- prcomp(as.matrix(data[45:length(data)]), scale = TRUE)
-pc_clin <- cbind(data[1:44],pcx)
+all_probes <- colnames(data)[grepl('cg',colnames(data))]
+pc <- prcomp(as.matrix(data[all_probes]), scale = TRUE)
+pc_clin <- cbind(data[,-all_probes],pcx)
 write.csv(pc_clin,paste0(outdir,'Output/Noob_',id,'_PCA.csv'),quote=F,row.names=F)
 generate_pcsummary(pc_clin,paste0("Noob_",id,"_PCA_summary.csv"),outdir)
 generate_pcplots(pc_clin,paste0("Noob_",id),outdir)
@@ -57,8 +58,8 @@ saveRDS(data,paste0(outdir,"rds/NoobCorrected_",id,".rds"))
 
 ## pca after correction ##
 cat("[ PCA of all data after correction ]","\n")
-pc <- prcomp(as.matrix(data[45:length(data)]), scale = TRUE)
-pc_clin <- cbind(data[1:44],pc$x)
+pc <- prcomp(as.matrix(data[all_probes]), scale = TRUE)
+pc_clin <- cbind(data[,-all_probes],pc$x)
 write.csv(pc_clin,paste0(outdir,'Output/NoobCorrected_',id,'_PCA.csv'),quote=F,row.names=F)
 generate_pcsummary(pc_clin,paste0("NoobCorrected_",id,"_PCA_summary.csv"),outdir)
 generate_pcplots(pc_clin,paste0("NoobCorrected_",id),outdir)

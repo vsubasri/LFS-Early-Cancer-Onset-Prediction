@@ -37,7 +37,7 @@ probes <- scan('model_probes.txt',what="character",sep='\n')
 ## Aggregate probes  ## 
 data_test <- aggregate_probes(data_test,probes)
 ## Scale data ## 
-data_test <- scale_df(data_test)
+data_test <- scale_df(data_test,probes)
 id <- paste0(id, "lfs_5UTR_scaled_")
 
 ## Read in predictive model ##

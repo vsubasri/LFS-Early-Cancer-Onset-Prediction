@@ -140,39 +140,6 @@ generate_pcplots <- function(pc_clin,output,outdir) {
 }
 
 ##########
-# Function to remove loci overlapping SNPs with MAF of choice and cross reactive SNPs
-##########
-
-remove_SNPs_xRP <- function(GRset,pheno,output) {
-  GRset_noSNPs <- dropLociWithSnps(GRset, snps=c("SBE","CpG"), maf=0)
-  B_noSNPs <- data.frame(getBeta(GRset_noSNPs))
-  B_noSNPs <- B_noSNPs[rowSums(is.na(B_noSNPs)) == 0,]
-  data_B_noSNPs <- cbind(pheno,t(B_noSNPs))
-  saveRDS(data_B_noSNPs,paste0("rds/",output,"_noSNPs.rds"))
-
-  xReactiveProbes <- read.csv(file="Resources/cross_reactive_probes.csv", stringsAsFactors=FALSE)
-  keep <- !(featureNames(GRset_noSNPs) %in% xReactiveProbes$TargetID)
-  GRset_noSNPs_noxRP <- GRset_noSNPs[keep,]
-  B_noSNPs_noxRP <- data.frame(getBeta(GRset_noSNPs_noxRP))
-  B_noSNPs_noxRP <- B_noSNPs_noxRP[rowSums(is.na(B_noSNPs_noxRP)) == 0,]
-  data_B_noSNPs_noxRP <- cbind(pheno,t(B_noSNPs_noxRP))
-  saveRDS(data_B_noSNPs_noxRP,paste0("rds/",output,"_noSNPs_noxRP.rds"))
-}
-
-
-##########
-# Function to remove probes located in sex chromosomes
-##########
-
-remove_sex <- function(cleaned,pheno,output) {
-  sexprobes <- scan('Scripts/sexprobes.txt',what="character")
-  nosex <- cleaned[, !colnames(cleaned) %in% sexprobes]
-  data_nosex <- cbind(pheno,nosex)
-  saveRDS(data_nosex,paste0("rds/",output,"_NoSex.rds"))
-  return(nosex)
-}
-
-##########
 # Function to project 450k data onto the 850k space
 ##########
 
@@ -201,10 +168,10 @@ remove_array_confounder <- function(data) {
 # data = preprocessed methylation data
 ########## 
 
-scale_df <- function(data) {
-  tmp <- data[45:length(data)]
+scale_df <- function(data,probes) {
+  tmp <- data[probes]
   tmp <- scale(tmp, center=TRUE,scale=TRUE)
-  data_scaled <- cbind(data[1:44],tmp)
+  data_scaled <- cbind(data[,-probes],tmp)
   return(data_scaled)
 }
 
@@ -232,59 +199,6 @@ aggregate_probes <- function(data,probes) {
 }
 
 ##########
-# Function to get probes differentially methylated between wildtype and mutant patients
-# data = preprocessed methylation data
-##########
-
-get_lfs_probes <- function(data) {
-  lfsprobes <- readRDS("Resources/lfs_probes.rds")
-  keep <- c(colnames(data)[1:44],lfsprobes[lfsprobes %in% colnames(data)])
-  data_lfs <- data[keep]
-  return(data_lfs)
-}
-
-##########
-# Function to remove cancer signal using bumphunter
-# data = preprocessed methylation data
-# id = name of file
-# outdir = output directory to save results
-##########
-
-get_cancer_probes <- function(data, id, outdir) {
-  registerDoParallel(cores = 4)
-
-  # the desgin matrix =  with rows representing samples and columns representing covariates.
-  # regression is applied to each row of mat. basically a column for the intercept (= 1)
-  # and a column for the variable of interest (cases vs controls).
-  designMatrix <- data.frame(intcpt = 1, cancer = ifelse(data$cancerstatus == "Unaffected",0,1))
-
-  # get granges object
-  ratio_set <- readRDS('Resources/raw_ratio_set.rds')
-  cat(paste0("[ Process parameters ]","\n"))
-  params <- process_params(data,ratio_set)
-
-  if(!file.exists(paste0(outdir,'rds/',id,"bumps.rds"))){
-  cat(paste0("[ Generating cancer probes ]","\n"))  
-  bumps <- bump_hunter(params, designMatrix, paste0(id,"bumps"),outdir)
-  } else {
-        cat(paste0("[ Loading cancer probes ]","\n"))
-    bumps <- get(load(paste0(outdir,'rds/',id,"bumps.rds")))
-  }
-  g_ranges <- as.data.frame(getLocations(ratio_set))
-  # get probes from rownames
-  g_ranges$probe <- rownames(g_ranges)
-  # remove ch and duplicatee
-  g_ranges <- g_ranges[!duplicated(g_ranges$start),]
-
-  #bumps <- get(load("Data_objects/bumps.rda"))
-  bumps_table <- bumps$table
-  bumps_sig <- bumps_table[bumps_table$p.value < 0.05,]
-  cat(paste0("Number of bumps : ",dim(bumps_sig)[1],"\n"))
-  bumps_probes <- inner_join(bumps_sig, g_ranges)$probe
-  return(bumps_probes)
-}
-
-##########
 # Function to set up parameters for bumphunter. Preprocess data to include samples of interest prior to calling this function
 # data = processed methylation data
 # ratio_set = ratio set objects for probes
@@ -292,7 +206,8 @@ get_cancer_probes <- function(data, id, outdir) {
 
 process_params <- function(data,ratio_set) {
 
-  clinical <- data[1:44]
+  probes <- colnames(data)[grepl('cg',colnames(data))]
+  clinical <- data[,-probes]
   #clinical <- data %>% select(ids:family_name)
   #start_loc = match("family_name",names(clinical)) + 1
   # get granges object
@@ -303,7 +218,7 @@ process_params <- function(data,ratio_set) {
   g_ranges <- g_ranges[!duplicated(g_ranges$start),]
   g_ranges <- g_ranges[!grepl('ch', g_ranges$probe),]
   # beta = A matrix with rows representing genomic locations and columns representing
-  beta <- t(data.frame(data[45:length(data)], row.names=data$ids))
+  beta <- t(data.frame(data[probes], row.names=data$ids))
 
   # beta <- t(data.frame(data[start_loc:length(data)], row.names=data$ids))
   g_ranges <- g_ranges %>%
@@ -359,34 +274,13 @@ bump_hunter <- function(params, designMatrix, name, outdir) {
 }
 
 ##########
-# Function to remove cross-reactive probes
-# data = methylation data
-##########
-
-remove_xRP <- function(data) {
-  xReactiveProbes <- read.csv(file="Resources/cross_reactive_probes.csv", stringsAsFactors=FALSE)
-  data_NoxRP <- data[colnames(data)[!colnames(data) %in% xReactiveProbes$TargetID]]
-  return(data_NoxRP)
-}
-
-##########
-# Function to remove age-associated probes 
-# data = methylation data
-##########
-
-remove_age_probes <- function(data) {
-  age_probes <- read.csv('Resources/Horvath_PedBE_probes.csv', stringsAsFactors=FALSE)
-  data <- data[colnames(data)[!colnames(data) %in% age_probes$probe]]
-  return(data)
-}
-
-##########
 # Function to remove technical replicates 
 # data = methylation data
 ##########
 
 remove_duplicates <- function(data) {
-  clin <- data[1:44] %>%
+  clincols <- colnames(data)[!grepl('cg',colnames(data))]
+  clin <- data[clincols] %>%
     arrange(desc(array)) %>%
     distinct(tm_donor, .keep_all = TRUE) %>%
     distinct(ids, .keep_all = TRUE)
