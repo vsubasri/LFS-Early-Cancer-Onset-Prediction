@@ -4,5 +4,8 @@ Li-Fraumeni syndrome (LFS) is an autosomal dominant cancer predisposition syndro
 
 ## LFS Age of Onset Analysis 
 
+This directory contains a collection of R scripts used to perform the analysis of the DNA methylation data. This includes identifying an optimal preprocessing and normalization, confounder removal, feature selection and model selection.
+
 ## LFS Age of Onset Pipeline
 
+This directory contains the scripts to predict early onset in any new LFS patients. 
