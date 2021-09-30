@@ -12,18 +12,23 @@ This directory contains the following scripts which are used to preprocess methy
 
 This script contains all the helper functions to perform preprocess, predict and plot. 
 
-    utils.R
-  
-This script runs the preprocessing which involves three major steps:
 ~~~
+    utils.R
+~~~
+
+This script runs the preprocessing which involves three major steps:
+
 1. Outlier removal
 2. Removal of batch confounder
 3. Removal of array confounder
+
 ~~~
     remove_confounders.R
-    
+~~~  
+
 This script runs the feature selection, model fitting and outputs the test results.
 
+~~~
     predictSingleExtVal.R
-
+~~~
 
