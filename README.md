@@ -10,18 +10,20 @@ This directory contains a collection of R scripts used to perform the analysis o
 
 This directory contains the following scripts which are used to preprocess methylation data and use that methylation data to predict early onset in LFS patients. 
 
+This script contains all the helper functions to perform preprocess, predict and plot. 
+
     utils.R
   
-This script contains all the helper functions to perform preprocess, predict and plot. 
-  
-    remove_confounders.R
-    
 This script runs the preprocessing which involves three major steps:
 
 1. Outlier removal
 2. Removal of batch confounder
 3. Removal of array confounder
+  
+    remove_confounders.R
+    
+This script runs the feature selection, model fitting and outputs the test results.
 
     predictSingleExtVal.R
 
-This script runs the feature selection, model fitting and outputs the test results.
+
