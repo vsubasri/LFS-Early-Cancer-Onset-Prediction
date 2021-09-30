@@ -9,3 +9,9 @@ This directory contains a collection of R scripts used to perform the analysis o
 ## LFS Age of Onset Pipeline
 
 This directory contains the scripts to predict early onset in any new LFS patients. 
+
+  utils.R
+  
+  remove_confounders.R
+  
+  predictSingleExtVal.R
