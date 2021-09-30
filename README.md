@@ -18,9 +18,9 @@ This script contains all the helper functions to perform preprocess, predict and
     
 This script runs the preprocessing which involves three major steps:
 
- i) Outlier removal
- ii) Removal of batch confounder
- iii) Removal of array confoundr
+    1. Outlier removal
+    2. Removal of batch confounder
+    3. Removal of array confoundr
 
     predictSingleExtVal.R
 
