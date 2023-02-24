@@ -7,7 +7,6 @@
 #SBATCH -e /hpf/largeprojects/davidm/blaverty/ageofonset/logs
 
 
-
 module load R/4.0.0
 
 Rscript rgset.R
