@@ -31,3 +31,5 @@ This script runs the preprocessing which involves three steps:
 
 This script runs the feature selection, model fitting and outputs the test results.
 
+Cite the code: [![DOI](https://zenodo.org/badge/387008281.svg)](https://zenodo.org/badge/latestdoi/387008281)
+
