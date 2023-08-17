@@ -1,16 +1,13 @@
-setwd('/hpf/largeprojects/adam/projects/lfs/lfs_germline/methyl_data')
+## load up the packages we will need:
 
-#####################################################################
-############################# Libraries #############################
-#####################################################################
+suppressMessages(require(argparse))
+suppressMessages(require(dplyr))
+suppressMessages(require(sva))
+suppressMessages(require(ggplot2))
+suppressMessages(require(reshape2))
 
-require(argparse)
-require(dplyr)
-require(sva)
-require(ggplot2)
-require(reshape2)
+## set up parser
 
-## set up parser ##
 parser <- ArgumentParser()
 parser$add_argument("--id", action="store")
 parser$add_argument("--outcome", action="store")
@@ -18,7 +15,6 @@ parser$add_argument("--seed", action="store")
 parser$add_argument("--nsplit", action="store",type="integer")
 parser$add_argument("--outdir", action="store")
 
-## set variables from parser ##
 args <- parser$parse_args()
 id <- args$id
 outcome <- args$outcome
@@ -27,13 +23,9 @@ nsplit <- args$nsplit
 outdir <- args$outdir
 
 set.seed(seed)
-source('Scripts/generalUtils.R')
 
-#####################################################################
-############################ Main Script ############################
-#####################################################################
-
-ind <- 44
+setwd('/hpf/largeprojects/davidm/vsubasri/methyl_data')
+source('Scripts/LFS_ageofonset/util_functions.R')
 
 cat("[ Generate train/test/val split  ]","\n")
 data <- readRDS(paste0(outdir,"rds/",id,".rds"))
@@ -45,6 +37,8 @@ data_train <- datasplits[[1]]
 data_test <- datasplits[[2]]
 data_val <- datasplits[[3]]
 rm(data)
+
+ind <- grep("cg", colnames(data_train))[1]-1
 
 ## Prepare model matrices ##
 pheno_train <- data_train[1:ind]

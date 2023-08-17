@@ -1,45 +1,37 @@
-setwd('/hpf/largeprojects/adam/projects/lfs/lfs_germline/methyl_data/')
+## load up the packages we will need:
 
-#####################################################################
-############################# Libraries #############################
-#####################################################################
+suppressMessages(library(ggplot2))
+suppressMessages(library(dplyr))
+suppressMessages(library(reshape2))
+suppressMessages(library(umap))
+suppressMessages(library(argparse))
 
-require(minfi)
-require(ggplot2)
-require(dplyr)
-require(reshape2)
-require(umap)
-require(argparse)
+## set up parser
 
-## set up parser ##
 parser <- ArgumentParser()
 parser$add_argument("--id", action="store")
 parser$add_argument("--seed", action="store")
 parser$add_argument("--nsplit", action="store",type="integer")
 parser$add_argument("--outdir", action="store")
 
-## set variables from parser ##
 args <- parser$parse_args()
 id <- args$id
 seed <- args$seed
 nsplit <- args$nsplit
 outdir <- args$outdir
 
-source('Scripts/generalUtils.R')
+setwd('/hpf/largeprojects/davidm/vsubasri/methyl_data')
+source('Scripts/LFS_ageofonset/util_functions.R')
+
 set.seed(seed)
-
-#####################################################################
-############################ Main Script ############################
-#####################################################################
-
-ind <- 44
 
 cat("[ Generate train/test/val split  ]","\n")
 data <- readRDS(paste0(outdir,"rds/",id,".rds"))
 data <- data[!is.na(data$ids),]
 data <- data[!data$Meth %in% c("Problem"),]
 
-print(nsplit)
+ind <- grep("cg", colnames(data))[1]-1
+
 datasplits <- getTrainTestVal(data,seed,nsplit)
 data_train <- datasplits[[1]]
 data_test <- datasplits[[2]]
@@ -47,6 +39,7 @@ data_val <- datasplits[[3]]
 rm(data)
 
 p_train <- prcomp(data_train[(ind+1):length(data_train)],scale=T)
+saveRDS(p_train,paste0('rds/',id,'_',seed,'_batchEffectRemoval.rds'))
 p_train_clin <- cbind(data_train[1:ind],p_train$x)
 
 cat("[ Find PC most correlated to plate ]",'\n')
@@ -63,8 +56,8 @@ pca_corr$pc <- paste0("PC",row.names(pca_corr))
 
 maxpc <- pca_corr$pc[pca_corr$rank == 1] ; maxpc_p <- pca_corr$pval[pca_corr$rank == 1]
 maxpc2 <- pca_corr$pc[pca_corr$rank == 2] ; maxpc_p2 <- pca_corr$pval[pca_corr$rank == 2]
-cat(paste0("[ Max age PC ] :",maxpc,"\t","[ Max age PC Association with Batch ] :",maxpc_p,"\n"))
-cat(paste0("[ Max age PC 2 ] :",maxpc2,"\t","[ Max age PC 2 Association with Batch ] :",maxpc_p2,"\n"))
+cat(paste0("[ Max batch-associated PC ] :",maxpc,"\t","[ Max PC Association with Batch ] :",maxpc_p,"\n"))
+cat(paste0("[ Max batch-associated PC 2 ] :",maxpc2,"\t","[ Max PC 2 Association with Batch ] :",maxpc_p2,"\n"))
 
 cat("[ Remove PC most correlated with Batch Effect ]",'\n')
 #https://stats.stackexchange.com/questions/229092/how-to-reverse-pca-and-reconstruct-original-variables-from-several-principal-com
@@ -120,5 +113,4 @@ pc_clin <- cbind(duplicated_data[1:ind],pc$x)
 write.csv(pc_clin,paste0(outdir,'Output/',id,'_ProjPC2Adj_TechnicalReplicates_PCA.csv'),quote=F,row.names=F)
 generate_pcsummary(pc_clin,paste0(id,'_ProjPC2Adj_TechnicalReplicates_PCA_summary.csv'),outdir)
 generate_pcplots(pc_clin,paste0(id,'_ProjPC2Adj_TechnicalReplicates'),outdir)
-
 
