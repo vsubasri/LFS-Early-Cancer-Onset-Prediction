@@ -13,6 +13,7 @@ do
     x=$(($x + 1))
     dep=$(qsub -v id=$id,bootstrap=$x,model=$model,outdir=$outdir,covars=${covars},probes=$probes,genes=$genes /hpf/largeprojects/adam/projects/lfs/lfs_germline/methyl_data/Scripts/sampling/sample_refit.sh)
     qsub -W depend=afterok:$dep -v id=$id,bootstrap=$x,model=$model,outdir=$outdir,covars=${covars},probes=$probes,genes=$genes /hpf/largeprojects/adam/projects/lfs/lfs_germline/methyl_data/Scripts/sampling/sample_refit_predict.sh
+
 done
 
 

@@ -1,12 +1,11 @@
 #!/bin/bash
 
 nsplit=40
-seeds=(1 2 3 4 5)
-##6 7 8 9 10)
+seeds=(1 2 3 4 5 6 7 8 9 10)
 
 maindir=/hpf/largeprojects/davidm/vsubasri/methyl_data/LFS_ageofonset/new_clinical_COG_S40_auroc/
 scripts_dir=/hpf/largeprojects/davidm/vsubasri/methyl_data/Scripts/LFS_ageofonset
-covars=""
+covars="--sex --tp53"
 pred_covars="--fnw 2"
 
 for seed in ${seeds[@]}
