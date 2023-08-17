@@ -1,23 +1,18 @@
-setwd('/hpf/largeprojects/adam/projects/lfs/lfs_germline/methyl_data')
+suppressMessages(require('bapred'))
+suppressMessages(require('dplyr'))
+suppressMessages(require('argparse'))
+suppressMessages(require('ggplot2'))
+suppressMessages(require('reshape2'))
 
-#####################################################################
-############################# Libraries #############################
-#####################################################################
+setwd('/hpf/largeprojects/davidm/vsubasri/methyl_data')
+source('Scripts/LFS_ageofonset/util_functions.R')
 
-require(bapred)
-require(dplyr)
-require(argparse)
-require(ggplot2)
-require(reshape2)
-
-## set up parser ##
 parser <- ArgumentParser()
 parser$add_argument("--id", action="store")
 parser$add_argument("--seed", action="store")
 parser$add_argument("--outdir", action="store")
 parser$add_argument("--nsplit", action="store",type="integer")
 
-## set variables from parser ##
 args <- parser$parse_args()
 id <- args$id
 seed <- args$seed
@@ -25,13 +20,7 @@ nsplit <- args$nsplit
 outdir <- args$outdir
 
 set.seed(seed)
-source('Scripts/generalUtils.R')
 
-#####################################################################
-############################ Main Script ############################
-#####################################################################
-
-ind <- 44
 
 cat("[ Generate train/test/val split  ]","\n")
 data <- readRDS(paste0(outdir,"rds/",id,".rds"))
@@ -43,6 +32,8 @@ data_train <- datasplits[[1]]
 data_test <- datasplits[[2]]
 data_val <- datasplits[[3]]
 rm(data)
+
+ind <- grep("cg", colnames(data_train))[1]-1
 
 cat("[ Run ComBat on training data ]","\n")
 Xsubtrain <- as.matrix(data_train[(ind+1):length(data_train)])

@@ -8,8 +8,8 @@ library(gridExtra)
 library(grid)
 library(argparse)
 
-setwd('/hpf/largeprojects/adam/projects/lfs/lfs_germline/methyl_data')
-source('Scripts/modelUtils.R')
+setwd('/hpf/largeprojects/davidm/vsubasri/methyl_data')
+source('Scripts/LFS_ageofonset/modelUtils.R')
 
 parser <- ArgumentParser()
 parser$add_argument("--id", action="store")
@@ -25,5 +25,4 @@ auc_all_val$dataset <- "validation"
 
 auc_all <- rbind(auc_all_val, auc_all_test)
 write.csv(auc_all, paste0(dir,"Output/",id,'_auc_all.csv'))
-
 
