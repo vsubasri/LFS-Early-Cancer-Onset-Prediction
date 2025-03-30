@@ -37,6 +37,3 @@ This directory contains a collection of scripts used to perform feature selectio
 ~~~
 
 
-
-Cite the code: [![DOI](https://zenodo.org/badge/387008281.svg)](https://zenodo.org/badge/latestdoi/387008281)
-
