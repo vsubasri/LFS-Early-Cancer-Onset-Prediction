@@ -11,8 +11,11 @@ suppressMessages(library(randomForest))
 suppressMessages(library(argparse))
 suppressMessages(library(caret))
 
-setwd('/hpf/largeprojects/davidm/vsubasri/methyl_data')
-source('Scripts/LFS_ageofonset/modelUtils.R')
+# Use relative path instead of absolute path
+script_dir <- file.path(getwd(), "model")
+data_dir <- file.path(getwd(), "data")
+setwd(data_dir)
+source(file.path(script_dir, 'modelUtils.R'))
 
 parser <- ArgumentParser()
 parser$add_argument("-o","--outdir", action="store")

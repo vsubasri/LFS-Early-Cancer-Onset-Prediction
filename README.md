@@ -64,6 +64,31 @@ Contains generated figures and visualization scripts for the project.
 
 Model checkpoints and saved model states.
 
+### Data Directory
+
+```
+/data
+```
+
+This project uses a centralized data directory structure with the following organization:
+
+- `/data/rds/` - For RDS data files
+- `/data/Output/` - For output files
+- `/data/Plots/` - For plot files  
+- `/data/Resources/` - For resource files like probe lists
+- `/data/Data/LFS_450/` - For 450k array data
+- `/data/Data/LFS_850/` - For 850k array data
+
+## Setting up the Data Directory
+
+The project has been updated to use relative paths based on a centralized data directory. Run the setup script to create the necessary directory structure:
+
+```bash
+./scripts/setup_data_dirs.sh
+```
+
+This script will create the required folder structure and provide instructions for migrating existing data.
+
 ## Usage
 
 Scripts in this repository are primarily R and shell scripts. Main model execution can be performed using:

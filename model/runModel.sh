@@ -8,8 +8,8 @@
 module load R/3.6.1
 
 covars="--tp53"
-scripts_dir=/hpf/largeprojects/davidm/vsubasri/methyl_data/Scripts/LFS_ageofonset
-outdir=/hpf/largeprojects/davidm/vsubasri/methyl_data/LFS_ageofonset/new_clinical_COG_S40/Seed4_TrainTestSplit_S40/
+scripts_dir="$(pwd)/model"
+outdir="$(pwd)/data"
 id=NoobCorrected_beta_ProjPC2Adj_
 region="3UTR"
 

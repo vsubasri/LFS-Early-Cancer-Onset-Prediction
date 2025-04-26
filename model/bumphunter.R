@@ -1,13 +1,10 @@
-source('Scripts/bumphunter_utils.R')
+source('bumphunter_utils.R')
 library(bumphunter)
 library(dplyr)
 library(doParallel)
 library(minfi)
 library(qvalue)
 library(argparse)
-
-setwd('/hpf/largeprojects/davidm/vsubasri/methyl_data/')
-
 ## set up parser
 parser <- ArgumentParser()
 parser$add_argument("--datafile", action="store")

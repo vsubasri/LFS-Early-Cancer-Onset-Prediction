@@ -2,9 +2,6 @@ library(wesanderson)
 library(ggplot2)
 library(ggsci)
 
-dir <- '/Users/vallijahsubasri/Documents/lfs_ageofonset/results/lfs_with_cog/'
-setwd(dir)
-
 ## get averaged model performance across val and test set
 files <- list.files(dir, pattern = "_auc_all.csv", recursive = TRUE, full.names = TRUE)
 all <- do.call(rbind, lapply(files, read.csv, row.names = 'X'))

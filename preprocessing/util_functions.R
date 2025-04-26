@@ -1,5 +1,11 @@
 suppressMessages(require(dplyr))
 suppressMessages(require(reshape2))
+suppressMessages(library(minfi))
+suppressMessages(library(wateRmelon))
+suppressMessages(library(SmartSVA))
+suppressMessages(library(limma))
+suppressMessages(library(umap))
+suppressMessages(library(lumi))
 
 ##########
 # function that Loops through list, preprocesses, and convert to beta, m, and cn values
@@ -28,6 +34,21 @@ preprocessMethod <- function(data, preprocess) {
     Mset <-preprocessNoob(data, dyeMethod="single")
   }
   return(Mset)
+}
+
+# Define function to get project root directory
+get_project_root <- function() {
+  return(file.path(getwd()))
+}
+
+# Define function to get data directory
+get_data_dir <- function() {
+  return(file.path(get_project_root(), "data"))
+}
+
+# Define function to get resources directory
+get_resources_dir <- function() {
+  return(file.path(get_data_dir(), "Resources"))
 }
 
 processData <- function(directory,id_map_clin,method,valtype,arraytype) {
@@ -120,6 +141,7 @@ getTrainTestVal <- function(data,nseed,nsamps) {
 }
 
 generate_pcsummary <- function(pc_clin, filename,outdir) {
+  data_dir <- get_data_dir()
   pc_clin_tt <- pc_clin[pc_clin$cancer_diagnosis %in% c("ACC","RMS","CPC","Breast","OS","Glioma","Unaffected"),]
   pcs <- colnames(pc_clin)[grepl( "PC" , names(pc_clin) )] ;
   anova_array <- list() ; anova_batch <- list() ; anova_cancerstatus <- list() ; anova_cancertype <- list()
@@ -140,18 +162,19 @@ generate_pcsummary <- function(pc_clin, filename,outdir) {
   anova$array_padj <- anova$array_p/anova$Proportion.of.Variance
   anova$cancerstatus_padj <- anova$cancerstatus_p/anova$Proportion.of.Variance
   anova$cancertype_padj <- anova$cancertype_p/anova$Proportion.of.Variance
-  write.csv(anova,paste0(outdir,'Output/',filename),quote=F,row.names=F)
+  write.csv(anova,file.path(data_dir, 'Output', filename),quote=F,row.names=F)
 }
 
 generate_pcplots <- function(pc_clin,output,outdir) {
-  pdf(paste0(outdir,"Plots/",output,"_PCA_cancerstatus.pdf"),width=9,height=7)
+  data_dir <- get_data_dir()
+  pdf(file.path(data_dir, "Plots", paste0(output, "_PCA_cancerstatus.pdf")),width=9,height=7)
   cancerstatusplot <- ggplot(pc_clin,aes(x=PC1,y=PC2,color=cancerstatus)) +
     geom_point() +
     theme_bw()
   print(cancerstatusplot)
   suppressMessages(dev.off())
 
-  pdf(paste0(outdir,"Plots/",output,"_PCA_gender.pdf"),width=9,height=7)
+  pdf(file.path(data_dir, "Plots", paste0(output, "_PCA_gender.pdf")),width=9,height=7)
   genderplot <- ggplot(pc_clin,aes(x=PC1,y=PC2,color=gender)) +
     geom_point() +
     theme_bw()
@@ -159,7 +182,7 @@ generate_pcplots <- function(pc_clin,output,outdir) {
   suppressMessages(dev.off())
 
   if (length(table(pc_clin$array)) > 1) {
-  pdf(paste0(outdir,"Plots/",output,"_PCA_array.pdf"),width=9,height=7)
+  pdf(file.path(data_dir, "Plots", paste0(output, "_PCA_array.pdf")),width=9,height=7)
     arrayplot <- ggplot(pc_clin,aes(x=PC1,y=PC2,color=array)) +
       geom_point() +
       theme_bw()
@@ -167,7 +190,7 @@ generate_pcplots <- function(pc_clin,output,outdir) {
     suppressMessages(dev.off())
   }
 
-  pdf(paste0(outdir,"Plots/",output,"_PCA_age.pdf"),width=9,height=7)
+  pdf(file.path(data_dir, "Plots", paste0(output, "_PCA_age.pdf")),width=9,height=7)
   ageplot <- ggplot(pc_clin,aes(x=PC1,y=PC2,color=agesamplecollection)) +
     geom_point() +
     theme_bw()
@@ -175,14 +198,14 @@ generate_pcplots <- function(pc_clin,output,outdir) {
   suppressMessages(dev.off())
 
   pc_clin$array <- factor(pc_clin$array)
-  pdf(paste0(outdir,"Plots/",output,"_PCA_confounders.pdf"),width=9,height=7)
+  pdf(file.path(data_dir, "Plots", paste0(output, "_PCA_confounders.pdf")),width=9,height=7)
   sourceplot <- ggplot(pc_clin,aes(x=PC1,y=PC2,color=Project, shape=array)) +
       geom_point() +
       theme_bw()
   print(sourceplot)
   suppressMessages(dev.off())
 
-  pdf(paste0(outdir,"Plots/",output,"_PCA_project.pdf"),width=9,height=7)
+  pdf(file.path(data_dir, "Plots", paste0(output, "_PCA_project.pdf")),width=9,height=7)
   projectplot <- ggplot(pc_clin,aes(x=PC1,y=PC2,color=Project)) +
     geom_point() +
     theme_bw()
@@ -192,26 +215,32 @@ generate_pcplots <- function(pc_clin,output,outdir) {
 }
 
 remove_SNPs_xRP <- function(GRset,pheno,output) {
+  data_dir <- get_data_dir()
   GRset_noSNPs <- dropLociWithSnps(GRset, snps=c("SBE","CpG"), maf=0)
   B_noSNPs <- data.frame(getBeta(GRset_noSNPs))
   B_noSNPs <- B_noSNPs[rowSums(is.na(B_noSNPs)) == 0,]
   data_B_noSNPs <- cbind(pheno,t(B_noSNPs))
-  saveRDS(data_B_noSNPs,paste0("rds/",output,"_noSNPs.rds"))
+  saveRDS(data_B_noSNPs,file.path(data_dir, "rds", paste0(output, "_noSNPs.rds")))
 
-  xReactiveProbes <- read.csv(file="/hpf/largeprojects/davidm/vsubasri/methyl_data/Resources/cross_reactive_probes.csv", stringsAsFactors=FALSE)
+  # Load cross-reactive probes from resources directory
+  resources_dir <- get_resources_dir()
+  xReactiveProbes <- read.csv(file.path(resources_dir, "cross_reactive_probes.csv"), stringsAsFactors=FALSE)
   keep <- !(featureNames(GRset_noSNPs) %in% xReactiveProbes$TargetID)
   GRset_noSNPs_noxRP <- GRset_noSNPs[keep,]
   B_noSNPs_noxRP <- data.frame(getBeta(GRset_noSNPs_noxRP))
   B_noSNPs_noxRP <- B_noSNPs_noxRP[rowSums(is.na(B_noSNPs_noxRP)) == 0,]
   data_B_noSNPs_noxRP <- cbind(pheno,t(B_noSNPs_noxRP))
-  saveRDS(data_B_noSNPs_noxRP,paste0("rds/",output,"_noSNPs_noxRP.rds"))
+  saveRDS(data_B_noSNPs_noxRP,file.path(data_dir, "rds", paste0(output, "_noSNPs_noxRP.rds")))
 }
 
 remove_sex <- function(cleaned,pheno,output) {
-  sexprobes <- scan('/hpf/largeprojects/davidm/vsubasri/methyl_data/Resources/sexprobes.txt',what="character")
+  data_dir <- get_data_dir()
+  # Load sex probes from resources directory
+  resources_dir <- get_resources_dir()
+  sexprobes <- scan(file.path(resources_dir, "sexprobes.txt"), what="character")
   nosex <- cleaned[, !colnames(cleaned) %in% sexprobes]
   data_nosex <- cbind(pheno,nosex)
-  saveRDS(data_nosex,paste0("rds/",output,"_NoSex.rds"))
+  saveRDS(data_nosex,file.path(data_dir, "rds", paste0(output, "_NoSex.rds")))
   return(nosex)
 }
 
@@ -229,6 +258,7 @@ get_technicalreplicates <- function(data) {
 }
 
 plot_concordance <- function(duplicated_data,value,outdir) {
+  data_dir <- get_data_dir()
   allprobes = colnames(duplicated_data)[grepl("cg",colnames(duplicated_data))]
   sample_probes = sample(allprobes,10000,replace=FALSE)
   sample_beta = duplicated_data[c("tm_donor","array",sample_probes)]
@@ -238,7 +268,7 @@ plot_concordance <- function(duplicated_data,value,outdir) {
   plot_dups$diff <- abs(plot_dups$`450`-plot_dups$`850`)
   distsum <- sum(plot_dups[, 'diff'])
 
-  pdf(paste0(outdir,'Plots/',value,'_450_850_concordance.pdf'),width=9,height=7)
+  pdf(file.path(data_dir, "Plots", paste0(value, "_450_850_concordance.pdf")),width=9,height=7)
   cplot <- ggplot(plot_dups,aes(x=`450`,y=`850`)) +
     geom_point(aes(colour = diff)) +
     theme_bw() +

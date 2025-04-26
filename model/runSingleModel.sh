@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --mem=48G
+#SBATCH --mem=8G
 #SBATCH --time 24:00:00
 #SBATCH --job-name single_model
 #SBATCH -e log.model.err
@@ -7,9 +7,10 @@
 
 module load R/3.6.1
 
-scripts_dir=/hpf/largeprojects/davidm/vsubasri/methyl_data/Scripts/LFS_ageofonset
+# Use relative path instead of absolute path
+scripts_dir="$(pwd)/model"
+outdir=${outdir-"$(pwd)/data"}
 
-echo "Rscript ${scripts_dir}/runSingleModel.R --id $id $vars --outdir $outdir"
-
-Rscript ${scripts_dir}/runSingleModel.R --id $id $vars --outdir $outdir
+echo "Rscript $scripts_dir/runSingleModel.R --outdir $outdir --id $id $vars"
+Rscript $scripts_dir/runSingleModel.R --outdir $outdir --id $id $vars
 

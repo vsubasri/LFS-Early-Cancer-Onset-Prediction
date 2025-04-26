@@ -3,15 +3,20 @@
 module load R/3.6.1
 seeds=(1 2 3 4 5)
 nsplit=30
-scripts_dir=/hpf/largeprojects/davidm/vsubasri/methyl_data/Scripts/LFS_ageofonset
+scripts_dir="$(pwd)/model"
 covars="--canceratdraw --systreat --scale"
 covars_label="scaled_canceratdraw_systreat"
 
 for seed in ${seeds[@]}
 do
-
-	outdir=/hpf/largeprojects/adam/projects/lfs/lfs_germline/methyl_data/Seed${seed}_TrainTestSplit_S$nsplit/
-	models=$(find ${outdir}rds -maxdepth 1 -name "NoobCorrected*TrainingSet.rds")
+	outdir="$(pwd)/data/Seed${seed}_TrainTestSplit_S$nsplit/"
+	mkdir -p ${outdir}rds
+	models=$(find ${outdir}rds -maxdepth 1 -name "NoobCorrected*TrainingSet.rds" 2>/dev/null || echo "")
+	if [ -z "$models" ]; then
+		echo "No models found for seed $seed, skipping"
+		continue
+	fi
+	
 	for model in ${models[@]}
 	do 
 
