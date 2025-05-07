@@ -342,10 +342,6 @@ ROCInfo_atcutoff <- function( data, predict, actual, cutoff, other_title, model)
   ) )
 }
 
-# Set working directory and model parameters
-dir <- '/Users/vallijahsubasri/Documents/lfs_ageofonset/predictions/'
-setwd(dir)
-
 covars <- c("","sex_","tp53_","cellprops_","systreat_","family_","family_sex_","family_tp53_",
             "sex_tp53_","cellprops_sex_","cellprops_sex_tp53_","family_sex_tp53_",
             "cellprops_family_sex_tp53_","cellprops_sex_tp53_nometh_","sex_tp53_PCA_")

@@ -4,7 +4,6 @@ library(reshape2)
 library(corrplot)
 library(ggpubr)
 
-dir <- "/Users/vallijahsubasri/Documents/lfs_ageofonset/"
 lfs <- readRDS(paste0(dir,'data/Noob_beta.rds'))
 lfs$agesamplecollection <- lfs$agesamplecollection/12
 lfs$ageofonset <- lfs$ageofonset/12

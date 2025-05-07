@@ -3,22 +3,19 @@ library(ggplot2)
 library(ggsci)
 library(reshape2)
 
-dir <- '/Users/vallijahsubasri/Documents/lfs_ageofonset/predictions/'
-setwd(dir)
-
 models <- c("enet","rf","gbm","xgboost","svmLinear","svmRadial","svmPoly","nnet")
 models_results <- list()
 
 for (model_type in models) {
   print(model_type)
-  ROCobj_val <- readRDS(paste0(dir,'NoobCorrected_beta_ProjPC2Adj_lfs_3UTR_72_FNW1_',model_type,'_ageofonset_ROCInfoVal.rds'))
+  ROCobj_val <- readRDS(paste0('data/rds/NoobCorrected_beta_ProjPC2Adj_lfs_3UTR_72_FNW1_',model_type,'_ageofonset_ROCInfoVal.rds'))
   val_results <- ROCobj_val[[1]]
   val_results <- val_results[!duplicated(val_results$ids),]
   weight=1
   pred_col='test_pred_calibrated'
   
   # Test set evaluation
-  ROCobj_test <- readRDS(paste0(dir,'NoobCorrected_beta_ProjPC2Adj_lfs_3UTR_72_FNW1_',model_type,'_ageofonset_ROCInfoTest.rds')) 
+  ROCobj_test <- readRDS(paste0('data/rds/NoobCorrected_beta_ProjPC2Adj_lfs_3UTR_72_FNW1_',model_type,'_ageofonset_ROCInfoTest.rds')) 
   test_results <- ROCobj_test[[1]]
   test_results <- test_results[!duplicated(test_results$ids),]
   
@@ -83,7 +80,7 @@ n_bootstrap <- 100  # Number of bootstrap iterations
 # Bootstrap for standard errors
 for (model_type in models) {
   print(model_type)
-  ROCobj_test <- readRDS(paste0(dir,'NoobCorrected_beta_ProjPC2Adj_lfs_3UTR_72_FNW1_',model_type,'_ageofonset_ROCInfoTest.rds')) 
+  ROCobj_test <- readRDS(paste0('data/rds/NoobCorrected_beta_ProjPC2Adj_lfs_3UTR_72_FNW1_',model_type,'_ageofonset_ROCInfoTest.rds')) 
   test_results <- ROCobj_test[[1]]
   test_results <- test_results[!duplicated(test_results$ids),]
   

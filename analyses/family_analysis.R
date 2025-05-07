@@ -377,12 +377,10 @@ plot.scores.AUC <- function(y, y.hat, measure = "tpr", x.measure = "fpr") {
   plot(prf, main = paste0("Curve (AUC: ", round(auc, 2), ")"))
 }
 
-dir <- "/Users/vallijahsubasri/Documents/lfs_ageofonset/family/seed2/"
-
 model_name <- "svmRadial"
-ROCobj_val <- readRDS(paste0(dir,"NoobCorrected_beta_ProjPC2Adj_lfs_3UTR_family_sex_72_FNW1_svmRadial_ageofonset_ROCInfoTest.rds"))
-ROCobj_test <- readRDS(paste0(dir,"NoobCorrected_beta_ProjPC2Adj_lfs_3UTR_family_sex_72_FNW1_svmRadial_ageofonset_ROCInfoVal.rds"))
-model <- readRDS(paste0(dir, "NoobCorrected_beta_ProjPC2Adj_lfs_3UTR_family_sex_72_svmRadial_ageofonset_results.rds"))
+ROCobj_val <- readRDS(paste0("data/rds/NoobCorrected_beta_ProjPC2Adj_lfs_3UTR_family_sex_72_FNW1_svmRadial_ageofonset_ROCInfoTest.rds"))
+ROCobj_test <- readRDS(paste0("data/rds/NoobCorrected_beta_ProjPC2Adj_lfs_3UTR_family_sex_72_FNW1_svmRadial_ageofonset_ROCInfoVal.rds"))
+model <- readRDS(paste0("checkpoint/NoobCorrected_beta_ProjPC2Adj_lfs_3UTR_family_sex_72_svmRadial_ageofonset_results.rds"))
 
 val_results <- ROCobj_val[[1]]
 val_results <- val_results[!duplicated(val_results$ids),]

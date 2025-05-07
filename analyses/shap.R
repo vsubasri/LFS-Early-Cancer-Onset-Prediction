@@ -8,12 +8,10 @@ require(dplyr)
 library(kernelshap)
 library(patchwork) 
 
-dir <- "/Users/vallijahsubasri/Documents/lfs_ageofonset/"
-
 model_name <- "svmRadial"
-model_path <- paste0(dir,'predictions/NoobCorrected_beta_ProjPC2Adj_lfs_3UTR_tp53_72_svmRadial_ageofonset_results.rds')
-data_path <- paste0(dir,"data/data_train.rds")
-feature_path <- paste0(dir,"data/features.txt")
+model_path <- paste0('checkpoint/NoobCorrected_beta_ProjPC2Adj_lfs_3UTR_tp53_72_svmRadial_ageofonset_results.rds')
+data_path <- paste0("data/data_train.rds")
+feature_path <- paste0("data/features.txt")
 
 # load model
 all <- readRDS(model_path)

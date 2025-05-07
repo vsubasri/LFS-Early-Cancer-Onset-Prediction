@@ -3,9 +3,6 @@ library(ggplot2)
 library(ggsci)
 library(reshape2)
 
-dir <- '/Users/vallijahsubasri/Documents/lfs_ageofonset/predictions/old/'
-setwd(dir)
-
 regions <- c("TSS200","TSS1500","Body","gene","3UTR", "5UTR","1stExon")
 region_results <- list()
 
@@ -198,7 +195,7 @@ ROCInfo_atcutoff <- function(data, predict, actual, cutoff, other_title, model) 
 for (region in regions) {
   print(region)
   model_type="svmRadial"
-  ROCobj_val <- readRDS(paste0(dir,'NoobCorrected_beta_ProjPC2Adj_lfs_',region,'_svmRadial_ageofonset_ROCInfoVal.rds'))
+  ROCobj_val <- readRDS(paste0('data/rds/NoobCorrected_beta_ProjPC2Adj_lfs_',region,'_svmRadial_ageofonset_ROCInfoVal.rds'))
   val_results <- ROCobj_val[[1]]
   val_results <- val_results[!duplicated(val_results$ids),]
   weight=1
@@ -206,7 +203,7 @@ for (region in regions) {
   ROCobj_val <- ROCInfo_atopt(val_results,pred_col,"test_label",1,weight,bestmodel_name, model_type)
   cutoff <- ROCobj_val$cutoff
   
-  ROCobj_test <- readRDS(paste0(dir,'NoobCorrected_beta_ProjPC2Adj_lfs_',region,'_svmRadial_ageofonset_ROCInfoTest.rds')) 
+  ROCobj_test <- readRDS(paste0('data/rds/NoobCorrected_beta_ProjPC2Adj_lfs_',region,'_svmRadial_ageofonset_ROCInfoTest.rds')) 
   test_results <- ROCobj_test[[1]]
   test_results <- test_results[!duplicated(test_results$ids),]
   ROCobj_test <- ROCInfo_atcutoff(test_results,pred_col,"test_label",cutoff,bestmodel_name,model_type)

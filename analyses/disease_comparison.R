@@ -9,12 +9,12 @@ setwd(dir)
 feats <- read.csv("data/features.txt", sep="\t", row.names=NULL)
 all <- readRDS(file.path(dir,'data/beta_all.rds'))
 all <- cbind(do.call(rbind,str_split(rownames(all),'_'))[,-1],all)
-ms <- read.csv('GSE_metadata/GSE43976_metadata.txt',sep='\t')
-ra <- read.csv('GSE_metadata/GSE42861_metadata.txt',sep='\t')
-ms2 <- read.csv('GSE_metadata/GSE106648_metadata.txt',sep='\t')
-ms3 <- read.csv('GSE_metadata/GSE130030_metadata.txt',sep='\t')
-breast <- read.csv('GSE_metadata/GSE51057_metadata.txt',sep='\t')
-colon <- read.csv('GSE_metadata/GSE51032_metadata.txt',sep='\t')
+ms <- read.csv('data/GSE_metadata/GSE43976_metadata.txt',sep='\t')
+ra <- read.csv('data/GSE_metadata/GSE42861_metadata.txt',sep='\t')
+ms2 <- read.csv('data/GSE_metadata/GSE106648_metadata.txt',sep='\t')
+ms3 <- read.csv('data/GSE_metadata/GSE130030_metadata.txt',sep='\t')
+breast <- read.csv('data/GSE_metadata/GSE51057_metadata.txt',sep='\t')
+colon <- read.csv('data/GSE_metadata/GSE51032_metadata.txt',sep='\t')
 all <- all[!all$`1` %in% ms$X.Sample_geo_accession[ms$X.Sample_source_name_ch1 != "Peripheral blood"],]
 all <- all[!all$`1` %in% ms3$X.Sample_geo_accession,]
 all <- all[all$array == "450",]

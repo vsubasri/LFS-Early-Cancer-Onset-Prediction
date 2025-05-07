@@ -1,9 +1,9 @@
 library(ggplot2)
 library(ggpubr)
 
-data <- readRDS('/Users/vallijahsubasri/Documents/lfs_ageofonset/data/rds/NoobCorrected_beta_ProjPC2Adj.rds')
+data <- readRDS('data/rds/NoobCorrected_beta_ProjPC2Adj.rds')
 data <- data[!is.na(data$agesamplecollection), ]
-age_probes <- read.csv('/Users/vallijahsubasri/Documents/lfs_ageofonset/scripts/pipeline/Resources/Horvath_PedBE_probes.csv',stringsAsFactors = F)
+age_probes <- read.csv('data/Horvath_PedBE_probes.csv', stringsAsFactors = F)
 data_age <- data[age_probes$probe[age_probes$probe %in% colnames(data)]]
 p_age <- prcomp(data_age, scale=TRUE)
 summary(p_age)
@@ -32,7 +32,7 @@ age_corr <- data.frame(do.call('rbind',age_corr))
 colnames(age_corr) <- c("corr")
 age_corr$type <- "age-associated"
 
-features <- read.csv('/Users/vallijahsubasri/Documents/lfs_ageofonset/scripts/pipeline/Resources/features.txt',sep='\t')
+features <- read.csv('data/features.txt',sep='\t')
 data_model <- data[features$probe]
 p_model <- prcomp(data_model[68:length(data_model)], scale=TRUE)
 summary(p_model)
@@ -74,8 +74,8 @@ ggplot(corr_dist,aes(x=abs_corr,fill=type)) +
 
 
 ###############
-data <- readRDS('/Users/vallijahsubasri/Documents/lfs_ageofonset/NoobCorrected_beta_ProjPC2Adj.rds')
-age_probes <- read.csv('/Users/vallijahsubasri/Documents/lfs_ageofonset/Horvath_PedBE_probes.csv',stringsAsFactors = F)
+data <- readRDS('data/rds/NoobCorrected_beta_ProjPC2Adj.rds')
+age_probes <- read.csv('data/Horvath_PedBE_probes.csv',stringsAsFactors = F)
 data_notage <- data[colnames(data)[!colnames(data) %in% age_probes$probe]]
 p_age <- prcomp(data, scale=TRUE)
 plot_p_age <- cbind(data.frame(p_age$x),data[1:67])
