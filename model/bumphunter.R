@@ -1,4 +1,7 @@
-source('bumphunter_utils.R')
+# Use relative paths
+script_dir <- dirname(sys.frame(1)$ofile)
+source(file.path(script_dir, 'bumphunter_utils.R'))
+
 library(bumphunter)
 library(dplyr)
 library(doParallel)

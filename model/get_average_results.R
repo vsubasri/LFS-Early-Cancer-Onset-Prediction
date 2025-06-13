@@ -8,7 +8,9 @@ library(gridExtra)
 library(grid)
 library(argparse)
 
-source('modelUtils.R')
+# Use relative paths
+script_dir <- dirname(sys.frame(1)$ofile)
+source(file.path(script_dir, 'modelUtils.R'))
 
 parser <- ArgumentParser()
 parser$add_argument("--dir", action="store")

@@ -7,8 +7,9 @@
 
 module load R/3.6.1
 
-scripts_dir=/hpf/largeprojects/davidm/vsubasri/methyl_data/Scripts/LFS_ageofonset
+# Use the directory where this script is located
+script_dir="$(dirname "$0")"
 
-Rscript ${scripts_dir}/predictSingleExtVal.R --id $id $vars --outdir $outdir
+Rscript "${script_dir}/predictSingleExtVal.R" --id $id $vars --outdir $outdir
 
 

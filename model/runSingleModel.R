@@ -11,10 +11,8 @@ suppressMessages(library(randomForest))
 suppressMessages(library(argparse))
 suppressMessages(library(caret))
 
-# Use relative path instead of absolute path
-script_dir <- file.path(getwd(), "model")
-data_dir <- file.path(getwd(), "data")
-setwd(data_dir)
+# Use relative paths
+script_dir <- dirname(sys.frame(1)$ofile)
 source(file.path(script_dir, 'modelUtils.R'))
 
 parser <- ArgumentParser()
