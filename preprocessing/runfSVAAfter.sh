@@ -9,7 +9,7 @@ module load R/3.6.1
 
 cd ${outdir}
 
-scripts_dir=/hpf/largeprojects/davidm/vsubasri/methyl_data/Scripts/LFS_ageofonset
+scripts_dir="$(dirname "$0")"
 
 Rscript ${scripts_dir}/fSVA_Project.R \
 	--id NoobCorrected_covs_${methvalue} \
@@ -18,7 +18,7 @@ Rscript ${scripts_dir}/fSVA_Project.R \
         --outdir ${outdir} \
 	--nsplit $nsplit
 
-Rscript  ${scripts_dir}/fSVA_Project.R \
+Rscript ${scripts_dir}/fSVA_Project.R \
         --id NoobCorrected_${methvalue} \
 	--outcome ${outcome} \
         --seed $seed \

@@ -9,7 +9,7 @@ covars_label="scaled_canceratdraw_systreat"
 
 for seed in ${seeds[@]}
 do
-	outdir="$(pwd)/data/Seed${seed}_TrainTestSplit_S$nsplit/"
+	outdir="$(dirname "$0")/../data/Seed${seed}_TrainTestSplit_S$nsplit/"
 	mkdir -p ${outdir}rds
 	models=$(find ${outdir}rds -maxdepth 1 -name "NoobCorrected*TrainingSet.rds" 2>/dev/null || echo "")
 	if [ -z "$models" ]; then

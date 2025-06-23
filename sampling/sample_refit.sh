@@ -7,20 +7,23 @@
 
 module load R/3.6.1
 
-export R_LIBS_USER=/hpf/largeprojects/adam/valli/R/3.6.1/
-export R_LIBS=/hpf/largeprojects/adam/valli/R/3.6.1/
+# Set R library paths - update to your local R installation as needed
+# export R_LIBS_USER=/path/to/your/R/library
+# export R_LIBS=/path/to/your/R/library
 
-echo "Rscript /hpf/largeprojects/adam/projects/lfs/lfs_germline/methyl_data/Scripts/sampling/sample_refit.R --id $id --aggregate TSS200 --canceratdraw --model $model --outdir $outdir --bootstrap $bootstrap --systreat $covars --probes $probes --genes $genes"
+scripts_dir="$(dirname "$0")"
 
-Rscript /hpf/largeprojects/adam/projects/lfs/lfs_germline/methyl_data/Scripts/sampling/sample_refit.R --id $id --aggregate TSS200 --systreat --canceratdraw --model $model --outdir $outdir --bootstrap $bootstrap $covars --probes $probes --genes $genes
+echo "Rscript ${scripts_dir}/sample_refit.R --id $id --aggregate TSS200 --canceratdraw --model $model --outdir $outdir --bootstrap $bootstrap --systreat $covars --probes $probes --genes $genes"
 
-Rscript /hpf/largeprojects/adam/projects/lfs/lfs_germline/methyl_data/Scripts/sampling/sample_refit.R --id $id --aggregate Body --systreat --canceratdraw --model $model --outdir $outdir --bootstrap $bootstrap $covars --probes $probes --genes $genes
+Rscript "${scripts_dir}/sample_refit.R" --id $id --aggregate TSS200 --systreat --canceratdraw --model $model --outdir $outdir --bootstrap $bootstrap $covars --probes $probes --genes $genes
 
-Rscript /hpf/largeprojects/adam/projects/lfs/lfs_germline/methyl_data/Scripts/sampling/sample_refit.R --id $id --aggregate 3UTR --systreat --canceratdraw --model $model --outdir $outdir --bootstrap $bootstrap $covars --probes $probes --genes $genes
+Rscript "${scripts_dir}/sample_refit.R" --id $id --aggregate Body --systreat --canceratdraw --model $model --outdir $outdir --bootstrap $bootstrap $covars --probes $probes --genes $genes
 
-Rscript /hpf/largeprojects/adam/projects/lfs/lfs_germline/methyl_data/Scripts/sampling/sample_refit.R --id $id --aggregate 5UTR --systreat --canceratdraw --model $model --outdir $outdir --bootstrap $bootstrap $covars --probes $probes --genes $genes
+Rscript "${scripts_dir}/sample_refit.R" --id $id --aggregate 3UTR --systreat --canceratdraw --model $model --outdir $outdir --bootstrap $bootstrap $covars --probes $probes --genes $genes
 
-Rscript /hpf/largeprojects/adam/projects/lfs/lfs_germline/methyl_data/Scripts/sampling/sample_refit.R --id $id --aggregate TSS1500 --systreat --canceratdraw --model $model --outdir $outdir --bootstrap $bootstrap $covars --probes $probes --genes $genes
+Rscript "${scripts_dir}/sample_refit.R" --id $id --aggregate 5UTR --systreat --canceratdraw --model $model --outdir $outdir --bootstrap $bootstrap $covars --probes $probes --genes $genes
 
-Rscript /hpf/largeprojects/adam/projects/lfs/lfs_germline/methyl_data/Scripts/sampling/sample_refit.R --id $id --aggregate 1stExon --systreat --canceratdraw --model $model --outdir $outdir --bootstrap $bootstrap $covars --probes $probes --genes $genes
+Rscript "${scripts_dir}/sample_refit.R" --id $id --aggregate TSS1500 --systreat --canceratdraw --model $model --outdir $outdir --bootstrap $bootstrap $covars --probes $probes --genes $genes
+
+Rscript "${scripts_dir}/sample_refit.R" --id $id --aggregate 1stExon --systreat --canceratdraw --model $model --outdir $outdir --bootstrap $bootstrap $covars --probes $probes --genes $genes
 

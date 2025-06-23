@@ -8,7 +8,7 @@
 module load R/3.6.1
 
 # Use relative path instead of absolute path
-scripts_dir="$(pwd)/preprocessing"
+scripts_dir="$(dirname "$0")"
 
 echo "[ Processing beta values ]"
 Rscript ${scripts_dir}/preprocess_beta.R

@@ -3,8 +3,8 @@
 nsplit=40
 seeds=(1 2 3 4 5 6 7 8 9 10)
 
-maindir=/hpf/largeprojects/davidm/vsubasri/methyl_data/LFS_ageofonset/new_clinical_COG_S40_auroc/
-scripts_dir=/hpf/largeprojects/davidm/vsubasri/methyl_data/Scripts/LFS_ageofonset
+scripts_dir="$(dirname "$0")"
+maindir="$(dirname "$0")/../data"
 covars="--sex --tp53"
 pred_covars="--fnw 2"
 

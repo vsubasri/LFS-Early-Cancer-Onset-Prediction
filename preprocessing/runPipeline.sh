@@ -4,7 +4,7 @@ methvalue=beta
 seeds=(1 2 3 4 5)
 ##6 7 8 9 10)
 nsplit=50
-data_dir=/hpf/largeprojects/davidm/vsubasri/methyl_data
+data_dir="$(dirname "$0")/../data"
 
 for seed in ${seeds[@]}
 do

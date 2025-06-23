@@ -8,8 +8,8 @@
 module load R/3.6.1
 
 # Use relative path instead of absolute path
-scripts_dir="$(pwd)/model"
-outdir=${outdir-"$(pwd)/data"}
+scripts_dir="$(dirname "$0")"
+outdir=${outdir-"$(dirname "$0")/../data"}
 
 echo "Rscript $scripts_dir/runSingleModel.R --outdir $outdir --id $id $vars"
 Rscript $scripts_dir/runSingleModel.R --outdir $outdir --id $id $vars

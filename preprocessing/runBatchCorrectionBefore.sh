@@ -9,7 +9,7 @@ module load R/3.6.1
 
 cd ${outdir}
 
-scripts_dir=/hpf/largeprojects/davidm/vsubasri/methyl_data/Scripts/LFS_ageofonset
+scripts_dir="$(dirname "$0")"
 
 Rscript ${scripts_dir}/map450_850.R \
         --datafile ${outdir}rds/Noob_${methvalue}.rds \

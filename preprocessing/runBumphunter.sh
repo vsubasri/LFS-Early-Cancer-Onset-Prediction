@@ -5,6 +5,6 @@
 
 module load R/3.4.4
 
-Rscript /hpf/largeprojects/davidm/vsubasri/methyl_data/Scripts/LFS_ageofonset/bumphunter.R
+Rscript "$(dirname "$0")/../model/bumphunter.R"
 
 

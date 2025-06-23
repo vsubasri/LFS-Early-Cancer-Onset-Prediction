@@ -9,7 +9,7 @@ module load R/3.6.1
 
 covars="--tp53"
 script_dir="$(dirname "$0")"
-outdir="$(pwd)/data"
+outdir="$(dirname "$0")/../data"
 id=NoobCorrected_beta_ProjPC2Adj_
 region="3UTR"
 

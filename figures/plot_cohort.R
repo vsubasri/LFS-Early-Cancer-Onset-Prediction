@@ -44,7 +44,7 @@ combined_data <- data %>%
   select(ids, tm_donor, Project, SentrixID, p53, Dataset, ageofonset, agesamplecollection, cancer_diagnosis) %>%
   bind_rows(wt_data)
 
-write.csv(combined_data,'Supplementary Table 2.csv',row.names = F)
+write.csv(combined_data,'Supplementary Table 1.csv',row.names = F)
 
 # Perform Wilcoxon rank-sum test
 wilcox_result <- wilcox.test(agesamplecollection ~ cancerstatus, data = data)

@@ -5,7 +5,7 @@
 
 module purge; module load R/3.4.4
 
-scripts_dir=/hpf/largeprojects/davidm/vsubasri/methyl_data/Scripts/LFS_ageofonset
+scripts_dir="$(dirname "$0")"
 
 Rscript ${scripts_dir}/celltype_deconvolution.R
 

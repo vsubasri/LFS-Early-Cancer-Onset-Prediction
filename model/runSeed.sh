@@ -9,7 +9,7 @@ module load R/3.6.1
 
 covars_label="optional"
 model=FNW1_svmRadial
-scripts_dir=/hpf/largeprojects/davidm/vsubasri/methyl_data/Scripts/LFS_ageofonset
+scripts_dir="$(dirname "$0")"
 
 if [ ! -f ${outdir}rds/${id}lfs_TSS200_${covars_label}_${model}_ageofonset_ROCInfoTest.rds ] ; then
 	Rscript $scripts_dir/runSingleModel.R --outdir $outdir --id $id --lfs --aggregate TSS200 $covars
