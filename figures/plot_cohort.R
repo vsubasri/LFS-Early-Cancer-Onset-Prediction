@@ -5,11 +5,13 @@ library(dplyr)
 
 # Working directory should be project root when called from shell scripts
 
-bestmodel <- "/Users/vallijahsubasri/Documents/lfs_ageofonset/predictions/NoobCorrected_beta_ProjPC2Adj_lfs_3UTR_72_FNW1_svmRadial"
+bestmodel <- "checkpoint/NoobCorrected_beta_ProjPC2Adj_lfs_3UTR_tp53_72_svmRadial_ageofonset_results"
 
-ROCobj_val <- readRDS(paste0(bestmodel,'_ageofonset_ROCInfoVal.rds'))
+# Load checkpoint model results  
+checkpoint_data <- readRDS(paste0(bestmodel, '.rds'))
+ROCobj_val <- checkpoint_data$ROCInfoVal
 val_results <- ROCobj_val[[1]]
-ROCobj_test <- readRDS(paste0(bestmodel,'_ageofonset_ROCInfoTest.rds')) 
+ROCobj_test <- checkpoint_data$ROCInfoTest 
 test_results <- ROCobj_test[[1]]
 
 data <- readRDS("data/rds/Noob_beta.rds")
