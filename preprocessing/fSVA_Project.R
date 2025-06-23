@@ -25,7 +25,7 @@ outdir <- args$outdir
 set.seed(seed)
 
 # Working directory should be project root when called from shell scripts
-source('Scripts/LFS_ageofonset/util_functions.R')
+source('preprocessing/util_functions.R')
 
 cat("[ Generate train/test/val split  ]","\n")
 data <- readRDS(paste0(outdir,"rds/",id,".rds"))

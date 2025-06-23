@@ -1,7 +1,7 @@
 library(ggplot2)
 library(dplyr)
 
-dir <- "/Users/vallijahsubasri/Documents/lfs_ageofonset/predictions/"
+dir <- "predictions/"
 
 ## Helper function to calculate NPV
 calculate_npv <- function(predictions, labels, cutoff) {
@@ -283,7 +283,7 @@ aggregate_bootstrap <- function(bsdir, location, final_ROCobj_val, final_ROCobj_
 `%||%` <- function(x, y) if (is.null(x)) y else x
 
 # Modify the bootstrap combination code to handle NULL returns
-bootstrap_dir <- "/Users/vallijahsubasri/Documents/lfs_ageofonset/random_sampling/"
+bootstrap_dir <- "random_sampling/"
 n_bootstrap <- 100  # or whatever number you want to use
 
 bs_results <- list(

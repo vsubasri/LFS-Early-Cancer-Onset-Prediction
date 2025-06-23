@@ -3,8 +3,7 @@ library(stringr)
 library(ggpubr)
 library(umap)
 
-dir <- '/Users/vallijahsubasri/Documents/lfs_ageofonset'
-setwd(dir)
+# Working directory should be project root when called from shell scripts
 
 feats <- read.csv("data/features.txt", sep="\t", row.names=NULL)
 all <- readRDS(file.path(dir,'data/beta_all.rds'))

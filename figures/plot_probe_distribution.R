@@ -3,7 +3,7 @@ library(IlluminaHumanMethylation450kanno.ilmn12.hg19)
 library(dplyr)
 library(stringr)
 
-features <- read.csv('/Users/vallijahsubasri/Documents/lfs_ageofonset/features.txt',sep='\t')
+features <- read.csv('data/features.txt',sep='\t')
 ann450k <- as.data.frame(getAnnotation(IlluminaHumanMethylation450kanno.ilmn12.hg19))
 ann450k$region <- do.call(rbind,str_split(ann450k$UCSC_RefGene_Group,';'))[,1]
 ann450k_3utr <- ann450k[ann450k$region=="3'UTR",]

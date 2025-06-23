@@ -10,11 +10,11 @@ suppressMessages(require(limma))
 suppressMessages(require(reshape2))
 
 # Working directory should be project root when called from shell scripts
-source('Scripts/LFS_ageofonset/util_functions.R')
+source('preprocessing/util_functions.R')
 
 ################################ READ IN INPUT ID FILES #################################
 
-outdir <- '/hpf/largeprojects/davidm/vsubasri/methyl_data/'
+outdir <- 'data/'
 
 cat("[ Reading in input sample sheets ]","\n")
 

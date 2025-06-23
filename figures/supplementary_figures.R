@@ -10,7 +10,7 @@ data <- readRDS("data/rds/NoobCorrected_beta_ProjPC2Adj_lfs_3UTR.rds")
 ######### Plot wt tumor type breakdown ##########
 #################################################
 
-wt_clin <- read.csv("scripts/pipeline/Resources/wt_samples.csv")
+wt_clin <- read.csv("data/wt_samples.csv")
 ggplot(wt_clin,aes(x=cancer_diagnosis, y=..count..)) +
   geom_bar(position="dodge",color="black",fill="grey",width=0.85) + 
   theme_minimal() +

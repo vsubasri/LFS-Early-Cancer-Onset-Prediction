@@ -21,7 +21,7 @@ nsplit <- args$nsplit
 outdir <- args$outdir
 
 # Working directory should be project root when called from shell scripts
-source('Scripts/LFS_ageofonset/util_functions.R')
+source('preprocessing/util_functions.R')
 
 set.seed(seed)
 

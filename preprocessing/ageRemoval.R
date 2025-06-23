@@ -15,7 +15,7 @@ id <- args$id
 
 set.seed(123)
 
-source('Scripts/util_functions.R')
+source('preprocessing/util_functions.R')
 
 ################################ READ IN INPUT ID FILES #################################
 

@@ -20,7 +20,7 @@ data <- data[!duplicated(data$tm_donor),]
 data <- data[!data$ids %in% c(2765,2957,3365,3367,3503,3885,4033,3301,3692,3733,3884,3886,3887,3888,3889,3892,4036,4037,4164,4165,4169,3304),]
 data$Dataset <- ifelse(data$ids %in% val_results$ids, "Validation", ifelse(data$ids %in% test_results$ids,"Test","Training"))
 
-wt_clin <- read.csv("scripts/pipeline/Resources/wt_samples.csv")
+wt_clin <- read.csv("data/wt_samples.csv")
 wt_clin$tm_donor <- as.character(wt_clin$tm_donor)
 wt_clin$age_diagnosis <- wt_clin$age_diagnosis/12
 wt_clin$age_sample_collection <- wt_clin$age_diagnosis/12

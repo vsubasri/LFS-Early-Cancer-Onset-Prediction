@@ -118,7 +118,7 @@ plot_cat <- function(data, type, x, y){
   v2 <- temp[[y]]
   combo <- combn(unique(v1), 2) # combinations for pairwise statistical test
   comp <- as.list(as.data.frame(combo))
-  filepath <- paste0("/Users/Brianne/Documents/R_Malkin/ageofonset/figures/", type, "_", x, "_", y, ".pdf") 
+  filepath <- paste0("figures/", type, "_", x, "_", y, ".pdf") 
   #pdf(filepath)
   
   g <- ggplot(temp) + 

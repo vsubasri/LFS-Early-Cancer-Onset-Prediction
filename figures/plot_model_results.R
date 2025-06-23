@@ -550,8 +550,8 @@ plot.scores.AUC <- function(y, y.hat, measure = "tpr", x.measure = "fpr") {
   plot(prf, main = paste0("Curve (AUC: ", round(auc, 2), ")"))
 }
 
-dir <- "/Users/vallijahsubasri/Documents/lfs_ageofonset/data/rds/"
-dir <- "/Users/vallijahsubasri/Documents/lfs_ageofonset/predictions/"
+dir <- "data/rds/"
+# dir <- "predictions/"
 
 bestmodel_name <- "NoobCorrected_beta_ProjPC2Adj_lfs_3UTR_72_FNW1_svmRadial"
 bestmodel_name <- "NoobCorrected_beta_ProjPC2Adj_lfs_3UTR_tp53_72_FNW1_svmRadial"
@@ -666,7 +666,7 @@ text(0.2, 0.35, paste("95% CI:", round(pROC_test$ci, 3)[1],"-" ,round(pROC_test$
 
 ## plot immune proportions
 
-data <- readRDS("/Users/vallijahsubasri/Documents/lfs_ageofonset/data/NoobCorrected_beta_ProjPC2Adj_lfs_3UTR.rds")
+data <- readRDS("data/rds/NoobCorrected_beta_ProjPC2Adj_lfs_3UTR.rds")
 #fwrite(as.list(colnames(data)[68:length(data)]),'~/Downloads/genes',sep='\n',quote=FALSE)
 u <- umap(data[68:length(data)],n_neighbors=20)
 #u <- umap(data[c("CLDN10", "CLDN18", "CTNNA1", "CTNNA3", "PIK3R1", "PXN", "RASSF5")])

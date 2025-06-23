@@ -5,7 +5,7 @@ suppressMessages(require('ggplot2'))
 suppressMessages(require('reshape2'))
 
 # Working directory should be project root when called from shell scripts
-source('Scripts/LFS_ageofonset/util_functions.R')
+source('preprocessing/util_functions.R')
 
 parser <- ArgumentParser()
 parser$add_argument("--id", action="store")

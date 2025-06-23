@@ -12,7 +12,7 @@ require(argparse)
 require(caret)
 
 # Working directory should be project root when called from shell scripts
-source('Scripts/modelUtils.R')
+source('model/modelUtils.R')
 
 parser <- ArgumentParser()
 parser$add_argument("-o","--outdir", action="store")

@@ -48,7 +48,7 @@ outdir <- args$outdir
 set.seed(seed)
 ## set working directory and utility functions ##
 # Working directory should be project root when called from shell scripts
-source('Scripts/LFS_ageofonset/util_functions.R')
+source('preprocessing/util_functions.R')
 
 #####################################################################
 ############################# Functions #############################

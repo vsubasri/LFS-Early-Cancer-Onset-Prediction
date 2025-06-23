@@ -2,7 +2,7 @@ library(maftools)
 library(stringr)
 source('custom_maftools.R')
 
-dir <- "/Users/vallijahsubasri/Documents/lfs_ageofonset/maftools_input/"
+dir <- "maftools_input/"
 
 ############################ Plot all pathogenic SNVs/indels in TP53 ############################
 allmutsTable <- read.csv(paste0(dir,'lfs_meth_tp53_maf.csv'),stringsAsFactors = F)

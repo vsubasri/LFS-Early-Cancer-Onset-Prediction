@@ -10,8 +10,8 @@ suppressMessages(library(ExperimentHub))
 #FlowSorted.Blood.EPIC
 
 # find sample sheets
-targets_450 <- read.metharray.sheet("/hpf/largeprojects/davidm/methyl_data/Data/LFS_Mut/450k", pattern = "SampleSheet.csv", ignore.case = TRUE, recursive = TRUE, verbose = TRUE)
-targets_850 <- read.metharray.sheet("/hpf/largeprojects/davidm/methyl_data/Data/LFS_Mut/850k", pattern = "SampleSheet.csv", ignore.case = TRUE, recursive = TRUE, verbose = TRUE)
+targets_450 <- read.metharray.sheet("data/Data/LFS_450", pattern = "SampleSheet.csv", ignore.case = TRUE, recursive = TRUE, verbose = TRUE)
+targets_850 <- read.metharray.sheet("data/Data/LFS_850", pattern = "SampleSheet.csv", ignore.case = TRUE, recursive = TRUE, verbose = TRUE)
 
 # remove rows where base name column is empty because samples listed in sample sheet but no idat files exist
 targets_450<- targets_450[targets_450$Basename != "character(0)", ]

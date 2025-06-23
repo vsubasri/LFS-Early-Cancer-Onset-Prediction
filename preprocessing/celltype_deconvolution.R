@@ -5,7 +5,7 @@ suppressMessages(library(dplyr))
 
 # Working directory should be project root when called from shell scripts
 
-source('Scripts/tumor_type_functions.R')
+source('preprocessing/tumor_type_functions.R')
 
 ################################ READ IN INPUT ID FILES #################################
 
