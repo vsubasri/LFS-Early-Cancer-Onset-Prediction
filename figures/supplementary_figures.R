@@ -3,7 +3,7 @@ library(tidyverse)
 library(IlluminaHumanMethylation450kanno.ilmn12.hg19)
 library(ggpubr)
 
-setwd("/Users/vallijahsubasri/Documents/lfs_ageofonset/")
+# Working directory should be project root when called from shell scripts
 data <- readRDS("data/rds/NoobCorrected_beta_ProjPC2Adj_lfs_3UTR.rds")
 
 #################################################

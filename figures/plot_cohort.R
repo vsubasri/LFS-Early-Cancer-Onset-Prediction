@@ -3,7 +3,7 @@ library(tidyverse)
 library(IlluminaHumanMethylation450kanno.ilmn12.hg19)
 library(dplyr)
 
-setwd('/Users/vallijahsubasri/Documents/lfs_ageofonset/')
+# Working directory should be project root when called from shell scripts
 
 bestmodel <- "/Users/vallijahsubasri/Documents/lfs_ageofonset/predictions/NoobCorrected_beta_ProjPC2Adj_lfs_3UTR_72_FNW1_svmRadial"
 

@@ -6,7 +6,7 @@ library(ggsci)
 library(reshape2)
 library(ggpubr)
 
-setwd('/Users/vallijahsubasri/Documents/lfs_ageofonset/')
+# Working directory should be project root when called from shell scripts
 data <- readRDS("data/rds/NoobCorrected_beta_ProjPC2Adj_lfs_3UTR.rds")
 bestmodel <- "/Users/vallijahsubasri/Documents/lfs_ageofonset/predictions/NoobCorrected_beta_ProjPC2Adj_lfs_3UTR_72_FNW1_svmRadial"
 

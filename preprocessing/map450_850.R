@@ -47,7 +47,7 @@ outdir <- args$outdir
 ## set seed
 set.seed(seed)
 ## set working directory and utility functions ##
-setwd('/hpf/largeprojects/davidm/vsubasri/methyl_data')
+# Working directory should be project root when called from shell scripts
 source('Scripts/LFS_ageofonset/util_functions.R')
 
 #####################################################################

@@ -4,7 +4,7 @@ suppressMessages(require('argparse'))
 suppressMessages(require('ggplot2'))
 suppressMessages(require('reshape2'))
 
-setwd('/hpf/largeprojects/davidm/vsubasri/methyl_data')
+# Working directory should be project root when called from shell scripts
 source('Scripts/LFS_ageofonset/util_functions.R')
 
 parser <- ArgumentParser()

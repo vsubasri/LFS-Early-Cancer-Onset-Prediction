@@ -9,7 +9,7 @@ suppressMessages(require(ggplot2))
 suppressMessages(require(limma))
 suppressMessages(require(reshape2))
 
-setwd('/hpf/largeprojects/davidm/vsubasri/methyl_data')
+# Working directory should be project root when called from shell scripts
 source('Scripts/LFS_ageofonset/util_functions.R')
 
 ################################ READ IN INPUT ID FILES #################################

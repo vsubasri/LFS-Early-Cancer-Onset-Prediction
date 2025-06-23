@@ -24,7 +24,7 @@ outdir <- args$outdir
 
 set.seed(seed)
 
-setwd('/hpf/largeprojects/davidm/vsubasri/methyl_data')
+# Working directory should be project root when called from shell scripts
 source('Scripts/LFS_ageofonset/util_functions.R')
 
 cat("[ Generate train/test/val split  ]","\n")

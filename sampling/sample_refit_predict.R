@@ -11,7 +11,7 @@ require(randomForest)
 require(argparse)
 require(caret)
 
-setwd('/hpf/largeprojects/adam/projects/lfs/lfs_germline/methyl_data')
+# Working directory should be project root when called from shell scripts
 source('Scripts/modelUtils.R')
 
 parser <- ArgumentParser()

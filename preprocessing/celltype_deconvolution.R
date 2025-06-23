@@ -3,7 +3,7 @@ suppressMessages(library(gplots))
 suppressMessages(library(mlogit))
 suppressMessages(library(dplyr))
 
-setwd('/hpf/largeprojects/davidm/vsubasri/methyl_data')
+# Working directory should be project root when called from shell scripts
 
 source('Scripts/tumor_type_functions.R')
 

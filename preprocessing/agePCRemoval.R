@@ -3,7 +3,7 @@ suppressMessages(library(library(plyr))
 suppressMessages(library(dplyr))
 suppressMessages(library(argparse))
 
-setwd('/hpf/largeprojects/davidm/vsubasri/methyl_data')
+# Working directory should be project root when called from shell scripts
 
 parser <- ArgumentParser()
 parser$add_argument("--datafile", action="store")

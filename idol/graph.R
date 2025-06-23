@@ -1,7 +1,7 @@
 library(dplyr)
 library(ggplot2)
 
-setwd('/hpf/largeprojects/davidm/blaverty/ageofonset')
+# Working directory should be project root when called from shell scripts
 
 # load immune cell counts
 #c <- readRDS("count_450.rds") # IDOL with 450k array
